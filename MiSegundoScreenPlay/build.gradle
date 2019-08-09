@@ -1,0 +1,37 @@
+repositories{// estos son los de donde se va a sacar los plugins 
+mavenLocal()//busca primero las que ya esten descargadas
+mavenCentral()//busca eb mvn reposetory las que no encuentra en la primera
+jcenter()// busca en otro repositorio por si la de arriba se cae 
+}
+buildscript{//se especifica los plugin que se necesite inyectarle a gradle
+	repositories{//estos son iguales a los de la funcion del repositorio 
+		mavenLocal()
+		mavenCentral()
+		jcenter()
+	}
+	dependencies{
+		classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.13")//este plugin es para gradle
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'//es para poder tener un par de plugins o tareas que generan el reporte clearreports y aggregate
+
+
+dependencies{
+testCompile 'net.serenity-bdd:serenity-core:2.0.8'
+testCompile 'net.serenity-bdd:serenity-junit:2.0.8'
+testCompile ('junit:junit:4.12')
+testCompile ('org.assertj:assertj-core:1.7.0')
+testCompile ('org.slf4j:slf4j-simple:1.7.7')
+
+compile 'net.serenity-bdd:serenity-core:1.9.9'
+compile 'net.serenity-bdd:serenity-junit:1.9.9'
+compile 'net.serenity-bdd:serenity-cucumber:1.9.5'
+compile 'net.serenity-bdd:serenity-screenplay:1.9.9'
+compile 'net.serenity-bdd:serenity-screenplay-webdriver:1.9.9'
+}
+gradle.startParameter.continueOnFailure=true
+test.finalizedBy(aggregate)
